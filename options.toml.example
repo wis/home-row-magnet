@@ -1,0 +1,6 @@
+[permutation]
+keys = "asdfghjklnvmcu"
+length = 4
+# these allow enough permutations for my 185 pixels per inch (PPI) 4K display
+[key_bindings]
+move = "m"
