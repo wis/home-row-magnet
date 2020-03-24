@@ -17,6 +17,8 @@ of the permutation in the rectangle you're targeting.
 - cd home-row-magnet
 - qpm install
 - open in qtcreator
+-  run for the first time to create the debug/release binary/build directory
+- move options.toml.example to options.toml in the build directory
 
 ## License
 MIT
