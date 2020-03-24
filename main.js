@@ -10,9 +10,9 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: width,
     height: height,
-    frame: false,
+    frame: true,
     resizeable: false,
-    backgroundColor: "black",
+    transparent: true,
     // fullscreen: true,
     movable: false,
     minWidth: width,
@@ -32,7 +32,7 @@ function createWindow() {
   setTimeout(() => {
     mainWindow.hide();
   }, 300);
-  mainWindow.webContents.openDevTools({mode: 'detach' });
+  // mainWindow.webContents.openDevTools({mode: 'detach' });
   mainWindow.loadFile("index.html");
 
   mainWindow.on("closed", () => {
@@ -109,7 +109,8 @@ ipcMain.on("setGlobalVariable", (event, myGlobalVariableValue) => {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow);
+// app.on('ready', createWindow);
+app.on("ready", () => setTimeout(createWindow, 500));
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {

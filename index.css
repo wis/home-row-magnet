@@ -4,7 +4,8 @@ body, canvas {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: black;
+  /* background-color: black; */
+  background-color: transparent;
   color: black;
   overflow: hidden;
   margin: 0;
