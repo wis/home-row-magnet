@@ -1,5 +1,5 @@
 # Home Row Magnet
-helps you keep your hands on the keyboard and not the mouse, draws a grid of 
+helps you keep your hands on the keyboard and not the mouse, draws a grid of
 small rectangles on the screen with a permutation inside each one, you enter the characters
 of the permutation in the rectangle you're targeting.
 
@@ -11,6 +11,12 @@ of the permutation in the rectangle you're targeting.
   - move cursor: press (by default) `m` before entering the permutation
     - this is configurable in the [options.toml](./options.toml) file under
       the `key_bindings` section
+
+## Development
+- git clone git@github.com:wis/home-row-magnet.git
+- cd home-row-magnet
+- qpm install
+- open in qtcreator
 
 ## License
 MIT

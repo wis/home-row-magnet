@@ -1,0 +1,6 @@
+[submodule "3rdparty/robot"]
+	path = 3rdparty/robot
+	url = git@github.com:wis/robotjs.git
+[submodule "3rdparty/toml11"]
+	path = 3rdparty/toml11
+	url = git@github.com:ToruNiina/toml11.git
