@@ -91,8 +91,8 @@ int main(int argc, char *argv[])
                 std::tie(x, y) =  getCoords(width , height, input, keys, length);
                 canvas->setProperty("xOffset", x);
                 canvas->setProperty("yOffset", y);
-                auto newWidth = width / (length ^ input.length());
-                auto newHeight = height / (length ^ input.length());
+                auto newWidth = width / pow(length, input.length());
+                auto newHeight = height / pow(length, input.length());
                 qDebug() << "newWidth " <<  newWidth << " newHeight " << newHeight;
                 canvas->setProperty("_width", QVariant::fromValue(newWidth));
                 canvas->setProperty("_height", QVariant::fromValue(newHeight));
