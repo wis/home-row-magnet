@@ -36,17 +36,15 @@ Window {
             console.log("drawing?")
             let cell = 0
             let cellWidth = _width / length, cellHeight = _height / length
-//            let cellWidth = _width, cellHeight = _height
             console.log("cellwidth", cellWidth, "cellheight", cellHeight)
             console.log("fond", ctx.font)
             ctx.strokeStyle = "#FFFFFF"
             ctx.strokeStyle = "white" //set the color of the stroke line
-            ctx.lineWidth = 3 //define the width of the stroke line
+            ctx.lineWidth = cellHeight < 10 ? 0 : 1
             ctx.fillStyle = "black"
             ctx.font = (Number(cellWidth * 0.9) + 2) + "px FreeMono"
             for (var _y = 0; _y < length; _y++) {
                 for (var _x = 0; _x < length; _x++) {
-                    console.log("rendering", keys[cell], cell, "at", _x, _y)
                     ctx.fillText(
                                 keys[cell].toUpperCase(),
                                 xOffset + _x * cellWidth + cellWidth / 2, yOffset
