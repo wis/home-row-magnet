@@ -2,6 +2,11 @@
 keys = "asdfghjklnvmcu"
 length = 4
 # these are good settings for my 185 pixels per inch (PPI) 4K display
-[key_bindings]
-move = "m"
-hotkey = "meta+ctrl+m"
+[shortcuts]
+move = "meta+alt+m"
+left_click = "meta+ctrl+c"
+middle_click = "meta+ctrl+m"
+right_click = "meta+alt+c"
+drag_left = "meta+ctrl+d"
+drag_right = "meta+alt+d"
+cancel = ";"
