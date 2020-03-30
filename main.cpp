@@ -79,17 +79,18 @@ int main(int argc, char *argv[])
     canvas->setProperty("keys", QString::fromStdString(keys));
     canvas->setProperty("length", length);
 
-    auto draw = [length, canvas](int x, int y, int width, int height, int n)
+    auto calc_new_size = [length](int width, int height, int n) {
+        auto newWidth = width / pow(length, n);
+        auto newHeight = height / pow(length, n);
+        return std::make_tuple(newWidth, newHeight);
+    };
+
+    auto draw = [length, canvas](int x, int y, int width, int height)
     {
         canvas->setProperty("xOffset", x);
         canvas->setProperty("yOffset", y);
-        auto newWidth = width / pow(length, n);
-        auto newHeight = height / pow(length, n);
-        qDebug() << "length " <<  length << " n " << n;
-        qDebug() << "width " <<  width << " height " << newHeight;
-        qDebug() << "newWidth " <<  newWidth << " newHeight " << newHeight;
-        canvas->setProperty("_width", QVariant::fromValue(newWidth));
-        canvas->setProperty("_height", QVariant::fromValue(newHeight));
+        canvas->setProperty("_width", QVariant::fromValue(width));
+        canvas->setProperty("_height", QVariant::fromValue(height));
         QMetaObject::invokeMethod(canvas, "requestDraw");
     };
 
@@ -101,7 +102,7 @@ int main(int argc, char *argv[])
     QObject::connect(cancel_hotkey, &QHotkey::activated, qApp, [&]() {
         operation = "";
         input = "";
-        draw(0, 0, width, height, length);
+        draw(0, 0, width, height);
     });
 
     auto click = [](_MMMouseButton button)
@@ -120,9 +121,12 @@ int main(int argc, char *argv[])
             input += keyChar;
             auto x = 0, y = 0;
             std::tie(x, y) =  getCoords(width , height, input, keys, length);
+            auto newWidth = 0, newHeight = 0;
+            std::tie(newWidth, newHeight) =  calc_new_size(width, height, input.length());
+            qDebug() << "newWidth " <<  newWidth << " newHeight " << newHeight;
             if (input.length() == length) {
                 input = "";
-                auto point = MMSignedPointMake(x, y);
+                auto point = MMSignedPointMake(x + newWidth / 2, y + newHeight / 2);
                 moveMouse(point);
                 if (operation == "left_click")
                     click(LEFT_BUTTON);
@@ -138,7 +142,7 @@ int main(int argc, char *argv[])
                 cancel_hotkey->setRegistered(false);
                 x = 0, y = 0;
             }
-            draw(x, y, width, height, input.length());
+            draw(x, y, newWidth, newHeight);
         });
     }
 
@@ -150,6 +154,7 @@ int main(int argc, char *argv[])
         QObject::connect(shortcut_hotkey, &QHotkey::activated, qApp, [&, shortcut]() {
             operation = shortcut.first;
             qDebug() << "trigger Hotkey Activated." << QString::fromStdString(shortcut.second);
+            moveMouse(MMSignedPointMake(width, height));
             canvas->setProperty("visible", true);
             for (ulong i = 0; i < hotkeys.size(); ++i) {
                 qDebug() << "2 hotkeys.at(i): " <<  hotkeys.at(i);
