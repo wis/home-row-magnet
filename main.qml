@@ -46,13 +46,13 @@ Window {
             for (var _y = 0; _y < length; _y++) {
                 for (var _x = 0; _x < length; _x++) {
                     ctx.fillText(
-                                keys[cell].toUpperCase(),
+                                keys[cell],
                                 xOffset + _x * cellWidth + cellWidth / 2, yOffset
                                 + (_y % 2 === 0 ? 0 : 1 + Math.floor(
                                                       _y / 2) * 2) + _y * cellHeight + cellHeight,
                                 cellWidth)
                     ctx.strokeText(
-                                keys[cell].toUpperCase(),
+                                keys[cell],
                                 xOffset + _x * cellWidth + cellWidth / 2, yOffset
                                 + (_y % 2 === 0 ? 0 : 1 + Math.floor(
                                                       _y / 2) * 2) + _y * cellHeight + cellHeight,
