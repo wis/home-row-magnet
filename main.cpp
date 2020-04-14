@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
         return std::make_tuple(newWidth, newHeight);
     };
 
-    auto draw = [length, canvas](int x, int y, int width, int height)
+    auto draw = [canvas](int x, int y, int width, int height)
     {
         canvas->setProperty("xOffset", x);
         canvas->setProperty("yOffset", y);
@@ -102,10 +102,38 @@ int main(int argc, char *argv[])
 
     qDebug() << "creating cancel QHotkey";
     auto cancel_hotkey = new QHotkey(QKeySequence(QString::fromStdString(cancel_shortcut)), false, &app);
-    QObject::connect(cancel_hotkey, &QHotkey::activated, qApp, [&]() {
-        operation = "";
+
+    auto enableKeys = [&](bool enable) {
+        for (ulong i = 0; i < hotkeys.size(); ++i) {
+            qDebug() << "hotkeys.at(i): " <<  hotkeys.at(i) << "enabled: " << enable;
+            hotkeys.at(i)->setRegistered(enable);
+        }
+    };
+
+    auto reset = [&]() {
         input = "";
-        draw(0, 0, width, height);
+        operation = "";
+        canvas->setProperty("visible", false);
+        enableKeys(false);
+        cancel_hotkey->setRegistered(false);
+    };
+
+    auto render = [&]()
+    {
+        auto x = 0, y = 0; std::tie(x, y) = getCoords(width , height, input, keys, length);
+        auto newWidth = 0, newHeight = 0; std::tie(newWidth, newHeight) = calc_new_size(width, height, input.length());
+        qDebug() << "newWidth " <<  newWidth << " newHeight " << newHeight;
+        draw(x, y, newWidth, newHeight);
+    };
+
+    QObject::connect(cancel_hotkey, &QHotkey::activated, qApp, [&]() {
+        if (input.length() == 0) {
+            reset();
+            return;
+        }
+        input = input.substr(0, input.length() - 1);
+        qDebug() << "new input " <<  QString::fromStdString(input);
+        render();
     });
 
     auto click = [](_MMMouseButton button)
@@ -113,6 +141,8 @@ int main(int argc, char *argv[])
         toggleMouse(true, button);
         toggleMouse(false, button);
     };
+
+
     for (ulong i = 0; i < keys.length(); ++i) {
         std::string keyChar = keys.substr(i, 1);
         QHotkey *ahotkey = new QHotkey(QKeySequence(QString::fromStdString(keyChar)), false, &app);
@@ -128,7 +158,6 @@ int main(int argc, char *argv[])
             std::tie(newWidth, newHeight) =  calc_new_size(width, height, input.length());
             qDebug() << "newWidth " <<  newWidth << " newHeight " << newHeight;
             if (input.length() == length) {
-                input = "";
                 auto point = MMSignedPointMake(x + newWidth / 2, y + newHeight / 2);
                 moveMouse(point);
                 if (operation == "left_click")
@@ -137,13 +166,9 @@ int main(int argc, char *argv[])
                     click(RIGHT_BUTTON);
                 else if (operation == "middle_click")
                     click(CENTER_BUTTON);
-                operation = "";
-                canvas->setProperty("visible", false);
-                for (ulong i = 0; i < hotkeys.size(); ++i) {
-                    hotkeys.at(i)->setRegistered(false);
-                }
-                cancel_hotkey->setRegistered(false);
+                reset();
                 x = 0, y = 0;
+                newWidth = width, newHeight = height;
             }
             draw(x, y, newWidth, newHeight);
         });
@@ -159,10 +184,7 @@ int main(int argc, char *argv[])
             qDebug() << "trigger Hotkey Activated." << QString::fromStdString(shortcut.second);
             moveMouse(MMSignedPointMake(width, height));
             canvas->setProperty("visible", true);
-            for (ulong i = 0; i < hotkeys.size(); ++i) {
-                qDebug() << "2 hotkeys.at(i): " <<  hotkeys.at(i);
-                hotkeys.at(i)->setRegistered(true);
-            }
+            enableKeys(true);
             qDebug() << "enabling canecl QHotkey";
             cancel_hotkey->setRegistered(true);
         });
