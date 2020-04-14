@@ -53,10 +53,12 @@ Window {
                                 xOffset + _x * cellWidth + cellWidth / 2, yOffset + _y * cellHeight + cellHeight,
                                 cellWidth)
 
+                    if (cellHeight > Screen.pixelDensity * 2) {
                         ctx.strokeText(
                                     keys[cell],
                                     xOffset + _x * cellWidth + cellWidth / 2, yOffset + _y * cellHeight + cellHeight,
                                     cellWidth)
+                    }
                     cell++
                 }
             }
