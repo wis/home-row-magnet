@@ -1,7 +1,8 @@
+font_family = "Ubuntu Mono"
 [permutation]
 keys = "asdfghjklnvmcu"
 length = 4
-# these are good settings for my 185 pixels per inch (PPI) 4K display
+# these are good settings for a 185 pixels per inch (PPI) 4K display/monitor
 [shortcuts]
 move = "meta+alt+m"
 left_click = "meta+ctrl+c"
