@@ -160,6 +160,7 @@ int main(int argc, char *argv[])
             if (input.length() == length) {
                 auto point = MMSignedPointMake(x + newWidth / 2, y + newHeight / 2);
                 moveMouse(point);
+                toggleKey(input[input.length() - 1], false, MOD_NONE);
                 if (operation == "left_click")
                     click(LEFT_BUTTON);
                 else if (operation == "right_click")
