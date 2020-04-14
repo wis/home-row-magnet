@@ -61,6 +61,7 @@ int main(int argc, char *argv[])
     const auto keys    = toml::find<std::string>(permutation, "keys");
     const auto length    = toml::find<std::int8_t>(permutation, "length");
     const auto shortcuts_data = toml::find(data, "shortcuts");
+    const auto font_family_setting = toml::find<std::string>(data, "font_family");
     const auto cancel_shortcut = toml::find<std::string>(shortcuts_data, "cancel");
     std::vector<std::string> operations = {
         "move", "left_click", "middle_click", "right_click", "drag_left", "drag_right"
@@ -77,6 +78,8 @@ int main(int argc, char *argv[])
     auto canvas = object->findChild<QObject*>("glass_canvas");
 
     canvas->setProperty("keys", QString::fromStdString(keys));
+    qDebug() << "font family: " << QString::fromStdString(font_family_setting);
+    canvas->setProperty("fontFamily", QString::fromStdString(font_family_setting));
     canvas->setProperty("length", length);
 
     auto calc_new_size = [length](int width, int height, int n) {

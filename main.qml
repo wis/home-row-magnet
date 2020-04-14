@@ -24,6 +24,7 @@ Window {
         property variant yOffset: 0
         property variant length
         property variant keys
+        property variant fontFamily
         onPaint: {
             ctx.textAlign = "center"
             requestAnimationFrame(draw)
@@ -43,6 +44,7 @@ Window {
             ctx.lineWidth = cellHeight < 10 ? 0 : 1
             ctx.fillStyle = "black"
             ctx.font = (Number(cellWidth * 0.9) + 2) + "px FreeMono"
+            ctx.font = (Number(cellWidth * 0.9) + 2) + "px " + fontFamily;
             for (var _y = 0; _y < length; _y++) {
                 for (var _x = 0; _x < length; _x++) {
                     ctx.fillText(
