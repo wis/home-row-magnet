@@ -87,17 +87,18 @@ int main(int argc, char *argv[])
         return std::make_tuple(newWidth, newHeight);
     };
 
-    auto draw = [canvas](int x, int y, int width, int height)
+    std::string operation = "";
+    std::string input = "";
+
+    auto draw = [&](int x, int y, int width, int height)
     {
         canvas->setProperty("xOffset", x);
         canvas->setProperty("yOffset", y);
         canvas->setProperty("_width", QVariant::fromValue(width));
         canvas->setProperty("_height", QVariant::fromValue(height));
+        canvas->setProperty("input_sequence", QString::fromStdString(input));
         QMetaObject::invokeMethod(canvas, "requestDraw");
     };
-
-    std::string operation = "";
-    std::string input = "";
 
     qDebug() << "creating cancel QHotkey";
     auto cancel_hotkey = new QHotkey(QKeySequence(QString::fromStdString(cancel_shortcut)), false, &app);

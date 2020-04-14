@@ -26,6 +26,7 @@ Window {
         property variant _height: Screen.height
         property variant xOffset: 0
         property variant yOffset: 0
+        property variant input_sequence: ""
         property variant length
         property variant keys
         property variant fontFamily
@@ -44,6 +45,34 @@ Window {
             let cellWidth = _width / length, cellHeight = _height / length, cell = 0
             console.log("cellwidth", cellWidth, "cellheight", cellHeight)
             ctx.font = (Number(cellWidth * 0.9) + 2) + "px " + fontFamily;
+            for (var lx = xOffset; lx < xOffset + _width + 1; lx+=cellWidth) {
+                ctx.beginPath();
+                ctx.strokeStyle = "black"
+                ctx.moveTo(lx - 1, yOffset);
+                ctx.lineTo(lx - 1, yOffset + _height);
+                ctx.moveTo(lx + 1, yOffset);
+                ctx.lineTo(lx + 1, yOffset + _height);
+                ctx.stroke();
+                ctx.strokeStyle = "white"
+                ctx.moveTo(lx, yOffset);
+                ctx.lineTo(lx, yOffset + _height);
+                ctx.stroke();
+            }
+            if (input_sequence.length < length - 1) {
+                for (var ly = yOffset; ly < yOffset + _height + 1; ly+=cellHeight) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = "black"
+                    ctx.moveTo(xOffset, ly - 1);
+                    ctx.lineTo(xOffset + _width, ly - 1);
+                    ctx.moveTo(xOffset, ly + 1);
+                    ctx.lineTo(xOffset + _width, ly + 1);
+                    ctx.stroke();
+                    ctx.strokeStyle = "white"
+                    ctx.moveTo(xOffset, ly);
+                    ctx.lineTo(xOffset + _width, ly);
+                    ctx.stroke();
+                }
+            }
             for (var _y = 0; _y < length; _y++) {
                 for (var _x = 0; _x < length; _x++) {
                     if ((cell + _y) % 2 == 0) {
