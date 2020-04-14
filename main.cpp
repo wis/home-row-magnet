@@ -72,7 +72,6 @@ int main(int argc, char *argv[])
         shortcuts[operation] = toml::find<std::string>(shortcuts_data, operation);
     }
 
-
     std::vector<QHotkey *> hotkeys;
 
     auto canvas = object->findChild<QObject*>("glass_canvas");
@@ -184,6 +183,7 @@ int main(int argc, char *argv[])
             qDebug() << "trigger Hotkey Activated." << QString::fromStdString(shortcut.second);
             moveMouse(MMSignedPointMake(width, height));
             canvas->setProperty("visible", true);
+            QMetaObject::invokeMethod(object, "raiseWindow");
             enableKeys(true);
             qDebug() << "enabling canecl QHotkey";
             cancel_hotkey->setRegistered(true);

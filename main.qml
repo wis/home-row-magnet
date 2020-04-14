@@ -2,6 +2,7 @@ import QtQuick 2.2
 import QtQuick.Window 2.2
 
 Window {
+    id: window
     visible: true
     visibility: "FullScreen"
     width: Screen.width
@@ -9,6 +10,9 @@ Window {
     color: "#00000000"
     flags: Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
            | Qt.WindowTransparentForInput | Qt.Popup
+
+    function raiseWindow() { raise() }
+
     Canvas {
         property var ctx
         id: glass_canvas
@@ -29,6 +33,7 @@ Window {
             ctx.textAlign = "center"
             ctx.lineWidth = 1
             requestAnimationFrame(draw)
+            console.log("pixeldensity:", Screen.pixelDensity);
         }
 
         function requestDraw() { requestAnimationFrame(draw) }
@@ -52,7 +57,6 @@ Window {
                                 keys[cell],
                                 xOffset + _x * cellWidth + cellWidth / 2, yOffset + _y * cellHeight + cellHeight,
                                 cellWidth)
-
                     if (cellHeight > Screen.pixelDensity * 2) {
                         ctx.strokeText(
                                     keys[cell],
